@@ -1,0 +1,215 @@
+window.onload = function() {
+    
+    // video
+    let videoBlock = document.querySelector(".video");
+    let video = document.querySelector("#video");
+    
+    // circls
+    let circls = document.querySelectorAll(".circl__inner")
+    
+    // SpaceMans
+    let spaceManFirst = document.querySelector(".spaceMan--first");
+    let spaceManSecond = document.querySelector(".spaceMan--second");
+    
+    // TV and LapTop
+    let TV = document.querySelector("#TV");
+    let LapTop = document.querySelector("#Laptop");
+    
+    
+    // let h = videoBlock.clientHeight;
+    // let w = 90;
+    // let t = 0.8;
+    // if(parseInt(windowScorllTop) >= videoBlock.offsetTop - 400 && video.style.scale <= 1.2){
+       
+    //     t += 0.01;
+    //     video.style.scale = t;
+    // }
+    // if(parseInt(windowScorllTop) <= videoBlock.offsetTop - 400 && video.style.scale >= 0.8){
+    //     t -= 0.01;
+    //     video.style.scale = t;
+    // }
+    
+
+
+    let videoBlodkMargin = 140;
+    
+    let valueForPoint = 0;
+    let startPoint = 370;
+    let endPoint = 1010;
+    // let endPoint = offset(videoBlock).top; 
+    let correlation = (videoBlodkMargin / (endPoint - startPoint)).toFixed(2);
+
+    videoBlock.style.margin = `0 ${videoBlodkMargin}px`;
+    // videoBlock.style.willChange = "margin";
+
+    function Video(windowScorll){
+        let windowScorllTop = windowScorll.toFixed(0);
+        // if(parseInt(windowScorllTop) >= startPoint && parseInt(windowScorllTop) <= endPoint){   
+        // if(parseInt(windowScorllTop) >= startPoint && videoBlock.style.margin >= "0px 0px"){   
+        if(windowScorllTop >= startPoint && windowScorllTop <= endPoint){   
+
+            valueForPoint = ((endPoint - windowScorllTop) * correlation).toFixed(3);
+
+            videoBlock.style.margin = `0 ${valueForPoint}px`;
+        }
+    }
+
+    window.addEventListener("scroll", () =>{
+        let windowScrollTop = window.pageYOffset;
+        // Video
+        // if(parseInt(windowScrollTop) >= videoBlock.offsetTop - 400 && videoBlock.clientHeight <= 915){
+        
+        // if(parseInt(windowScrollTop) >= videoBlock.offsetTop - 400 && video.style.scale <= 1.2){
+        //     //h2.2  w0.2
+        //     // h += 3;
+        //     // w += 0.5;
+    
+        //     // videoBlock.style.height = `${h}px`;
+        //     // video.style.width = `${w}%`;
+
+        //     t += 0.01;
+        //     video.style.scale = t;
+        // }
+        // if(parseInt(windowScrollTop) <= videoBlock.offsetTop - 400 && video.style.scale >= 0.8){
+        //     t -= 0.01;
+        //     video.style.scale = t;
+        // }
+    
+
+        requestAnimationFrame(Video(windowScrollTop));
+
+        // Video(windowScrollTop);
+
+
+        // TV and Laptop
+        if(windowScrollTop >= offset(TV).top - 400){
+            TV.style.right = "0";
+            TV.style.opacity = "1";
+        }
+        if(windowScrollTop >= offset(LapTop).top - 400){
+            LapTop.style.left = "-60px";
+            LapTop.style.opacity = "1";
+        }
+    
+    
+        // SpaceMans
+        // SpaceMan1
+        if(windowScrollTop >= offset(spaceManFirst).top - 400){
+            if(spaceManFirst.classList.contains('animaSp1Left')){
+                spaceManFirst.classList.remove('animaSp1Left');
+            }
+    
+            if(!spaceManFirst.classList.contains('animaSp1Right')){
+                spaceManFirst.classList.add('animSp1Right');
+            }
+        }else{
+            if(spaceManFirst.classList.contains('animaSp1Right')){
+                spaceManFirst.classList.remove('animSp1Right');
+            }
+    
+            if(!spaceManFirst.classList.contains('animaSp1Left')){
+                spaceManFirst.classList.add('animaSp1Left');
+            }
+        }
+    
+        // SpaceMan2
+        if(windowScrollTop >= offset(spaceManSecond).top - 400){
+            if(spaceManSecond.classList.contains('animaSp2Left')){
+                spaceManSecond.classList.remove('animaSp2Left');
+            }
+            
+            if(!spaceManSecond.classList.contains('animaSp2Right')){
+                spaceManSecond.classList.add('animSp2Right');
+            }
+        }else{
+            if(spaceManSecond.classList.contains('animaSp2Right')){
+                spaceManSecond.classList.remove('animSp2Right');
+            }
+            
+            if(!spaceManSecond.classList.contains('animaSp2Left')){
+                spaceManSecond.classList.add('animaSp2Left');
+            }
+        }
+    
+    
+        // Circls
+        for (let index = 0; index < circls.length; index++) {
+            const element = circls[index];
+    
+            if(windowScrollTop >= offset(element).top - 200){
+                element.style.opacity = "1";
+            }
+        }
+    })
+    
+    
+    //Для знаходження точних координатів    top: left:
+    function offset(element){
+        const rect = element.getBoundingClientRect(),
+        scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+        scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+    }
+ 
+
+
+
+
+
+    let columnInner= document.querySelector(".column__inner");
+    let element = columnInner.firstElementChild;
+
+    let contentImg = document.querySelectorAll(".content__img");
+
+    
+    let L = 0;
+
+    let m = 336;
+
+    columnInner.style.willChange = 'transform';
+    
+    setInterval(function(){
+        L -= 0.6;
+        columnInner.style.transform = `translateX(${L}px)`;
+
+        if(offset(element).left <= -400){
+
+            columnInner.style.marginLeft = m + "px";
+            columnInner.appendChild(element);
+
+            element = columnInner.firstElementChild;
+
+            m += 336;
+
+        }
+
+    },10)
+
+
+    // let interval = setInterval(ImgAnimation, 10)
+    
+    
+    
+    function ImgAnimation(){
+        L -= 1;
+        // columnInner.style.left = L + "px";
+
+        // if(offset(element).left <= -400){
+            //     columnInner.removeChild(element);
+            
+            //     columnInner.style.marginLeft = "336px";
+            //     columnInner.append(element);
+            
+            //     console.log(element)
+            //     element = columnInner.firstElementChild;
+            //     console.log(element)
+        //     clearInterval(interval);
+        // }
+        columnInner.style.transform  = "translate-x(32px)"
+    }
+
+
+
+};
+
+
