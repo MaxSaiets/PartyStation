@@ -113,7 +113,6 @@ let reviewInterval = setInterval(reviewsItem, timeReviews);
 function reviewsItem(plusOrMinus = true){
     plusOrMinus = plusOrMinus;
 
-    // через форич
     if(indexRevItActive > 0){
         reviewsItems[indexRevItActive-1].style.opacity = 0;
     }
